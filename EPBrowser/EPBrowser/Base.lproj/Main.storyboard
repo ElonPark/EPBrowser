@@ -32,7 +32,31 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <toolbarItems>
+                        <barButtonItem title="뒤로가기" id="IYN-Dn-uza">
+                            <connections>
+                                <action selector="goBack:" destination="BYZ-38-t0r" id="Awn-DO-GH3"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="앞으로 가기" id="rXd-Ax-01K">
+                            <connections>
+                                <action selector="goForward:" destination="BYZ-38-t0r" id="wkF-dQ-UE3"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem systemItem="refresh" id="mki-Gw-HE2">
+                            <connections>
+                                <action selector="reload:" destination="BYZ-38-t0r" id="NcP-Lj-8j3"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" leftItemsSupplementBackButton="YES" largeTitleDisplayMode="never" id="lvf-VY-VrR"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="backButton" destination="IYN-Dn-uza" id="d12-E6-gyM"/>
+                        <outlet property="forwardButton" destination="rXd-Ax-01K" id="4Yy-gJ-JJY"/>
+                        <outlet property="mainView" destination="Gfq-k9-FwB" id="byG-7p-Ly4"/>
+                        <outlet property="reloadButton" destination="mki-Gw-HE2" id="pqq-5g-jZF"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

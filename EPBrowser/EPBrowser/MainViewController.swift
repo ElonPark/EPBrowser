@@ -35,15 +35,66 @@ extension MainViewController {
         webView.allowsBackForwardNavigationGestures = true
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     }
+    
+    func loadRequest(to urlString: String) {
+        guard urlString.hasPrefix("http") else { return }
+        guard let url = URL(string: urlString) else { return }
+        
+        webView.load(URLRequest(url: url))
+    }
+    
+    func goBack() {
+        guard webView.canGoBack else { return }
+        webView.goBack()
+    }
+    
+    func goForward() {
+        guard webView.canGoForward else { return }
+        webView.goForward()
+    }
+    
+    func reload() {
+        webView.reload()
+    }
+    
 }
 
 class MainViewController: UIViewController {
 
+    @IBOutlet weak var mainView: UIView!
+    @IBOutlet weak var backButton: UIBarButtonItem!
+    @IBOutlet weak var forwardButton: UIBarButtonItem!
+    @IBOutlet weak var reloadButton: UIBarButtonItem!
+    
+    
     lazy var webView = WKWebView()
+    
+    @IBAction func goBack(_ sender: UIBarButtonItem) {
+        goBack()
+    }
+    
+    @IBAction func goForward(_ sender: UIBarButtonItem) {
+        goForward()
+    }
+    
+    @IBAction func reload(_ sender: UIBarButtonItem) {
+        reload()
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        initWebView()
+        mainView.addSubview(webView)
+        
+        loadRequest(to: "https://m.naver.com")
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        webView.frame = mainView.bounds
     }
 }
 
