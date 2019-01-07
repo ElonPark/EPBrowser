@@ -13,7 +13,17 @@ extension MainViewController: WKUIDelegate {
 
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         
-        return nil
+        var popupWebView: WKWebView? = nil
+        
+        if let popupVC = createPopUpVC(config: configuration) {
+            popupWebView = popupVC.webView
+            navigationController?.pushViewController(popupVC, animated: true)
+            
+        } else {
+            webView.load(navigationAction.request)
+        }
+        
+        return popupWebView
     }
     
     func webViewDidClose(_ webView: WKWebView) {

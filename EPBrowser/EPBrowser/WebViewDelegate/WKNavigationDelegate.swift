@@ -32,6 +32,8 @@ extension MainViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         
+        let host = webView.url?.host ?? ""
+        setTitle(host)
     }
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
