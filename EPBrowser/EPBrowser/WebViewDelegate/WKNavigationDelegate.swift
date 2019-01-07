@@ -13,7 +13,16 @@ extension MainViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         
-        decisionHandler(.allow)
+        var policy: WKNavigationActionPolicy = .allow
+        
+        defer {
+            decisionHandler(policy)
+        }
+        
+        if openOtherApp(by: navigationAction.request.url) {
+            policy = .cancel
+            return
+        }
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {

@@ -20,7 +20,17 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gfq-k9-FwB">
                                 <rect key="frame" x="0.0" y="64" width="375" height="559"/>
+                                <subviews>
+                                    <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="foe-3b-uot">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="2"/>
+                                    </progressView>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="foe-3b-uot" secondAttribute="trailing" id="FDh-W5-wXC"/>
+                                    <constraint firstItem="foe-3b-uot" firstAttribute="leading" secondItem="Gfq-k9-FwB" secondAttribute="leading" id="T2U-Fs-r3Y"/>
+                                    <constraint firstItem="foe-3b-uot" firstAttribute="top" secondItem="Gfq-k9-FwB" secondAttribute="top" id="UfV-CT-Jkj"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -33,16 +43,17 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <toolbarItems>
-                        <barButtonItem title="뒤로가기" id="IYN-Dn-uza">
+                        <barButtonItem title="Back" id="IYN-Dn-uza">
                             <connections>
                                 <action selector="goBack:" destination="BYZ-38-t0r" id="Awn-DO-GH3"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem title="앞으로 가기" id="rXd-Ax-01K">
+                        <barButtonItem title="Forward" id="rXd-Ax-01K">
                             <connections>
                                 <action selector="goForward:" destination="BYZ-38-t0r" id="wkF-dQ-UE3"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="NKG-GQ-gJq"/>
                         <barButtonItem systemItem="refresh" id="mki-Gw-HE2">
                             <connections>
                                 <action selector="reload:" destination="BYZ-38-t0r" id="NcP-Lj-8j3"/>
@@ -55,6 +66,7 @@
                         <outlet property="backButton" destination="IYN-Dn-uza" id="d12-E6-gyM"/>
                         <outlet property="forwardButton" destination="rXd-Ax-01K" id="4Yy-gJ-JJY"/>
                         <outlet property="mainView" destination="Gfq-k9-FwB" id="byG-7p-Ly4"/>
+                        <outlet property="progressBar" destination="foe-3b-uot" id="7YM-3M-PEN"/>
                         <outlet property="reloadButton" destination="mki-Gw-HE2" id="pqq-5g-jZF"/>
                     </connections>
                 </viewController>

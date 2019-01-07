@@ -34,6 +34,11 @@ extension MainViewController {
         webView.uiDelegate = self
         webView.allowsBackForwardNavigationGestures = true
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        webView.addObserver(self, forKeyPath: progressObserverKey,
+                            options: .new, context: nil)
+        
+        mainView.insertSubview(webView, belowSubview: progressBar)
     }
     
     func loadRequest(to urlString: String) {
@@ -57,17 +62,38 @@ extension MainViewController {
         webView.reload()
     }
     
+    /**
+     URL scheme이 다른 앱인 경우 해당 URL을 앱 외부로 요청한다.
+     
+     - parameter requestURL: 요청한 URL
+     - returns : 다른 앱을 요청한 경우 true
+    */
+    func openOtherApp(by requestURL: URL?) -> Bool {
+        guard let url = requestURL else { return false }
+        guard url.scheme != "http" else { return false }
+        guard url.scheme != "https" else { return false }
+        guard url.scheme != Config.schmes else { return false }
+        
+        UIApplication.shared.open(url)
+        
+        return true
+    }
 }
 
 class MainViewController: UIViewController {
 
     @IBOutlet weak var mainView: UIView!
+    @IBOutlet weak var progressBar: UIProgressView!
+    
     @IBOutlet weak var backButton: UIBarButtonItem!
     @IBOutlet weak var forwardButton: UIBarButtonItem!
     @IBOutlet weak var reloadButton: UIBarButtonItem!
     
-    
+    ///웹뷰
     lazy var webView = WKWebView()
+    
+    ///웹뷰 프로그레스 옵저버 키
+    let progressObserverKey = "estimatedProgress"
     
     @IBAction func goBack(_ sender: UIBarButtonItem) {
         goBack()
@@ -86,7 +112,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         
         initWebView()
-        mainView.addSubview(webView)
+        
         
         loadRequest(to: "https://m.naver.com")
     }
@@ -95,6 +121,19 @@ class MainViewController: UIViewController {
         super.viewDidLayoutSubviews()
         
         webView.frame = mainView.bounds
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        
+        //프로그레스 로딩 애니메이션
+        guard let key = keyPath, key == progressObserverKey else { return }
+        
+        progressBar.isHidden = webView.estimatedProgress == 1
+        
+        let progress = Float(webView.estimatedProgress)
+        if progressBar.progress > progress {
+            progressBar.setProgress(progress, animated: true)
+        }
     }
 }
 

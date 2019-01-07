@@ -18,6 +18,7 @@
 		3399D52F21E0EF6C00F77AB2 /* WKUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3399D52E21E0EF6C00F77AB2 /* WKUIDelegate.swift */; };
 		3399D53121E0F1DC00F77AB2 /* WebKitMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3399D53021E0F1DC00F77AB2 /* WebKitMessages.swift */; };
 		3399D53321E0F38C00F77AB2 /* WebKitMessagesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3399D53221E0F38C00F77AB2 /* WebKitMessagesHandler.swift */; };
+		339ACCE921E39FAD0031569A /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339ACCE821E39FAD0031569A /* Config.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		3399D52E21E0EF6C00F77AB2 /* WKUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKUIDelegate.swift; sourceTree = "<group>"; };
 		3399D53021E0F1DC00F77AB2 /* WebKitMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitMessages.swift; sourceTree = "<group>"; };
 		3399D53221E0F38C00F77AB2 /* WebKitMessagesHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitMessagesHandler.swift; sourceTree = "<group>"; };
+		339ACCE821E39FAD0031569A /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 				3399D50421E0E7FD00F77AB2 /* Assets.xcassets */,
 				3399D50621E0E7FD00F77AB2 /* LaunchScreen.storyboard */,
 				3399D50921E0E7FD00F77AB2 /* Info.plist */,
+				339ACCE821E39FAD0031569A /* Config.swift */,
 			);
 			path = EPBrowser;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				3399D52F21E0EF6C00F77AB2 /* WKUIDelegate.swift in Sources */,
 				3399D53121E0F1DC00F77AB2 /* WebKitMessages.swift in Sources */,
 				3399D50021E0E7FA00F77AB2 /* MainViewController.swift in Sources */,
+				339ACCE921E39FAD0031569A /* Config.swift in Sources */,
 				3399D52C21E0EEAB00F77AB2 /* WKNavigationDelegate.swift in Sources */,
 				3399D53321E0F38C00F77AB2 /* WebKitMessagesHandler.swift in Sources */,
 				3399D4FE21E0E7FA00F77AB2 /* AppDelegate.swift in Sources */,
@@ -464,7 +468,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = park.elon.EPBrowser;
+				PRODUCT_BUNDLE_IDENTIFIER = park.elon.EPBowser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -483,7 +487,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = park.elon.EPBrowser;
+				PRODUCT_BUNDLE_IDENTIFIER = park.elon.EPBowser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
