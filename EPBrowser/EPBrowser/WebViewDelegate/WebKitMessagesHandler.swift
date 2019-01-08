@@ -9,9 +9,16 @@
 import UIKit
 import WebKit
 
-extension MainViewController: WKScriptMessageHandler {
+extension WebViewController: WKScriptMessageHandler {
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         
+        guard let webKitMessage = WebKitMessages(rawValue: message.name) else { return }
+        
+        switch webKitMessage {
+        case .documentReady:
+            progressBar.isHidden = true
+
+        }
     }
 }

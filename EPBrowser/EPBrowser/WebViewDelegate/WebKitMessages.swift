@@ -9,5 +9,6 @@
 import Foundation
 
 enum WebKitMessages: String, CaseIterable {
-    case documentReady = "document.ready"
+
+    case documentReady = "documentReady"
 }

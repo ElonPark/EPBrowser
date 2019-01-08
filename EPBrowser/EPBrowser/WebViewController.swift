@@ -1,5 +1,5 @@
 //
-//  MainViewController.swift
+//  WebViewController.swift
 //  EPBrowser
 //
 //  Created by Nebula_MAC on 05/01/2019.
@@ -9,44 +9,64 @@
 import UIKit
 import WebKit
 
-extension MainViewController {
+extension WebViewController {
  
+    ///제목 설정
     func setTitle(_ title: String) {
         navigationItem.title = title
     }
     
-    ///웹뷰 초기화
-    func initWebView() -> WKWebView {
-        guard self.webView == nil else { return self.webView! }
-        
+    ///웹뷰 사용자 콘텐츠 설정
+    func webViewUserContent() -> WKUserContentController {
         let contentController = WKUserContentController()
         
+        ///웹에서 받을 메시지 설정
         for message in WebKitMessages.allCases {
             contentController.add(self, name: message.rawValue)
         }
         
+        ///도큐멘트가 준비되면 메시지 전송
+        let documentReadyJS = "webkit.messageHandlers.documentReady.postMessage(true)"
+        let documentReadyScript = WKUserScript(source: documentReadyJS, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+        contentController.addUserScript(documentReadyScript)
+        
+        return contentController
+    }
+    
+    ///웹뷰 설정
+    func webViewConfiguration() -> WKWebViewConfiguration {
         let configuration = WKWebViewConfiguration()
         configuration.dataDetectorTypes = .all
-        configuration.userContentController = contentController
+        configuration.userContentController = webViewUserContent()
         
         let preferences = configuration.preferences
         preferences.minimumFontSize = 5
         preferences.javaScriptEnabled = true
         preferences.javaScriptCanOpenWindowsAutomatically = true
         
+        return configuration
+    }
+    
+    ///웹뷰 초기화
+    func initWebView() -> WKWebView {
+        guard self.webView == nil else { return self.webView! }
+   
+        ///웹뷰 설정
         let webView = WKWebView(frame: CGRect.zero,
-                            configuration: configuration)
+                            configuration: webViewConfiguration())
         webView.navigationDelegate = self
         webView.uiDelegate = self
         webView.allowsBackForwardNavigationGestures = true
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
+        ///프로그레스 옵버저
         webView.addObserver(self, forKeyPath: progressObserverKey,
                             options: .new, context: nil)
         
         return webView
     }
     
+    ///웹페이지 이동 요청
     func loadRequest(to urlString: String) {
         guard urlString.hasPrefix("http") else { return }
         guard let url = URL(string: urlString) else { return }
@@ -54,16 +74,19 @@ extension MainViewController {
         webView?.load(URLRequest(url: url))
     }
     
+    ///뒤로가기
     func goBack() {
         guard let webView = self.webView, webView.canGoBack else { return }
         webView.goBack()
     }
     
+    ///앞으로가기
     func goForward() {
         guard let webView = self.webView, webView.canGoForward else { return }
         webView.goForward()
     }
     
+    ///새로고침
     func reload() {
         webView?.reload()
     }
@@ -76,13 +99,33 @@ extension MainViewController {
     */
     func openOtherApp(by requestURL: URL?) -> Bool {
         guard let url = requestURL else { return false }
-        guard url.scheme != "http" else { return false }
-        guard url.scheme != "https" else { return false }
+        guard let host = url.host else { return false }
+        guard let scheme = url.scheme else { return false }
         guard url.scheme != Config.schmes else { return false }
         
-        UIApplication.shared.open(url)
+        if host.contains("itunse.apple.com") {
+            UIApplication.shared.open(url)
+            return true
+            
+        } else if scheme != "http" && scheme != "https" {
+            UIApplication.shared.open(url)
+            return true
+        }
         
-        return true
+        return false
+    }
+    
+    ///새창 닫기
+    @objc func closePopup() {
+        let windowCloseJS = "javascript:window.close();"
+        popupVC?.webView?.evaluateJavaScript(windowCloseJS)
+    }
+    
+    ///새창 닫기 버튼
+    func navigationBackButton() -> UIBarButtonItem {
+        let closeButton = UIBarButtonItem(title: "닫기", style: .plain, target: self, action: #selector(closePopup))
+        
+        return closeButton
     }
     
     /**
@@ -92,9 +135,8 @@ extension MainViewController {
      
      - Returns: 새롭게 생성 된 웹뷰
      */
-    ///새창 생성
-    func createPopUpVC(config: WKWebViewConfiguration) -> MainViewController? {
-        guard let popupVC = storyboard?.instantiateViewController(withIdentifier: "MainViewController") as? MainViewController else { return nil }
+    func createPopUpVC(config: WKWebViewConfiguration) -> WebViewController? {
+        guard let popupVC = storyboard?.instantiateViewController(withIdentifier: "WebViewController") as? WebViewController else { return nil }
         
         popupVC.webView = WKWebView(frame: CGRect.zero, configuration: config)
         popupVC.webView?.navigationDelegate = popupVC
@@ -103,18 +145,16 @@ extension MainViewController {
         popupVC.webView?.allowsBackForwardNavigationGestures = true
         popupVC.webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
-        popupVC.webView?.addObserver(self, forKeyPath: progressObserverKey,
+        popupVC.webView?.addObserver(popupVC, forKeyPath: progressObserverKey,
                             options: .new, context: nil)
+     
+        popupVC.navigationItem.leftBarButtonItem = navigationBackButton()
         
         return popupVC
     }
-    
-    @objc func closeWebView() {
-        navigationController?.popViewController(animated: true)
-    }
 }
 
-class MainViewController: UIViewController {
+class WebViewController: UIViewController {
 
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var progressBar: UIProgressView!
@@ -125,6 +165,9 @@ class MainViewController: UIViewController {
     
     ///웹뷰
     var webView: WKWebView?
+    
+    ///새창
+    var popupVC: WebViewController?
     
     ///웹뷰 프로그레스 옵저버 키
     let progressObserverKey = "estimatedProgress"
@@ -141,23 +184,28 @@ class MainViewController: UIViewController {
         reload()
     }
     
-    deinit {
-        if viewIfLoaded != nil {
-            webView?.removeObserver(self, forKeyPath: progressObserverKey)
-        }
-    }
+    
+    // - MARK: View lifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if webView == nil {
             webView = initWebView()
-            loadRequest(to: "http://clien.net")
+            loadRequest(to: "http://www.naver.com")
         }
         
         if let webView = self.webView {
             mainView.insertSubview(webView, belowSubview: progressBar)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     override func viewDidLayoutSubviews() {
@@ -170,7 +218,6 @@ class MainViewController: UIViewController {
         
         //프로그레스 로딩 애니메이션
         guard let key = keyPath, key == progressObserverKey else { return }
-        
         guard let webView = self.webView else { return }
         progressBar.isHidden = webView.estimatedProgress == 1
         
@@ -180,4 +227,3 @@ class MainViewController: UIViewController {
         }
     }
 }
-

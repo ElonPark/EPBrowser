@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3399D4FE21E0E7FA00F77AB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3399D4FD21E0E7FA00F77AB2 /* AppDelegate.swift */; };
-		3399D50021E0E7FA00F77AB2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3399D4FF21E0E7FA00F77AB2 /* MainViewController.swift */; };
+		3399D50021E0E7FA00F77AB2 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3399D4FF21E0E7FA00F77AB2 /* WebViewController.swift */; };
 		3399D50321E0E7FA00F77AB2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3399D50121E0E7FA00F77AB2 /* Main.storyboard */; };
 		3399D50521E0E7FD00F77AB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3399D50421E0E7FD00F77AB2 /* Assets.xcassets */; };
 		3399D50821E0E7FD00F77AB2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3399D50621E0E7FD00F77AB2 /* LaunchScreen.storyboard */; };
@@ -41,7 +41,7 @@
 /* Begin PBXFileReference section */
 		3399D4FA21E0E7FA00F77AB2 /* EPBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EPBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3399D4FD21E0E7FA00F77AB2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3399D4FF21E0E7FA00F77AB2 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		3399D4FF21E0E7FA00F77AB2 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		3399D50221E0E7FA00F77AB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3399D50421E0E7FD00F77AB2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3399D50721E0E7FD00F77AB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -109,7 +109,7 @@
 			children = (
 				3399D4FD21E0E7FA00F77AB2 /* AppDelegate.swift */,
 				3399D52D21E0EEF200F77AB2 /* WebViewDelegate */,
-				3399D4FF21E0E7FA00F77AB2 /* MainViewController.swift */,
+				3399D4FF21E0E7FA00F77AB2 /* WebViewController.swift */,
 				3399D50121E0E7FA00F77AB2 /* Main.storyboard */,
 				3399D50421E0E7FD00F77AB2 /* Assets.xcassets */,
 				3399D50621E0E7FD00F77AB2 /* LaunchScreen.storyboard */,
@@ -281,7 +281,7 @@
 			files = (
 				3399D52F21E0EF6C00F77AB2 /* WKUIDelegate.swift in Sources */,
 				3399D53121E0F1DC00F77AB2 /* WebKitMessages.swift in Sources */,
-				3399D50021E0E7FA00F77AB2 /* MainViewController.swift in Sources */,
+				3399D50021E0E7FA00F77AB2 /* WebViewController.swift in Sources */,
 				339ACCE921E39FAD0031569A /* Config.swift in Sources */,
 				3399D52C21E0EEAB00F77AB2 /* WKNavigationDelegate.swift in Sources */,
 				3399D53321E0F38C00F77AB2 /* WebKitMessagesHandler.swift in Sources */,

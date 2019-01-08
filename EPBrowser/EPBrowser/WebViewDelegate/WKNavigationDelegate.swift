@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-extension MainViewController: WKNavigationDelegate {
+extension WebViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         
@@ -40,6 +40,10 @@ extension MainViewController: WKNavigationDelegate {
         
     }
     
+    func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
+        
+    }
+    
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         
     }
@@ -55,10 +59,6 @@ extension MainViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         
         completionHandler(.performDefaultHandling, nil)
-    }
-    
-    func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
-        
     }
     
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {

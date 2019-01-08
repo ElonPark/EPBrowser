@@ -9,25 +9,31 @@
 import UIKit
 import WebKit
 
-extension MainViewController: WKUIDelegate {
+extension WebViewController: WKUIDelegate {
 
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-        
-        var popupWebView: WKWebView? = nil
-        
+
+        if openOtherApp(by: navigationAction.request.url) {
+            return nil
+        }
+       
         if let popupVC = createPopUpVC(config: configuration) {
-            popupWebView = popupVC.webView
+            self.popupVC = popupVC
             navigationController?.pushViewController(popupVC, animated: true)
             
         } else {
             webView.load(navigationAction.request)
         }
         
-        return popupWebView
+        return popupVC?.webView
     }
     
     func webViewDidClose(_ webView: WKWebView) {
+        if let popup = popupVC {
+            popup.webView?.removeObserver(popup, forKeyPath: progressObserverKey)
+        }
         
+        navigationController?.popViewController(animated: true)
     }
 
     func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
