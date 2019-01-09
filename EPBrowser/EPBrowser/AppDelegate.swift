@@ -7,15 +7,35 @@
 //
 
 import UIKit
+import SwiftyBeaver
+
+let logger = SwiftyBeaver.self
+
+extension AppDelegate {
+    
+    func setLogger(with level: SwiftyBeaver.Level) {
+        let console = ConsoleDestination()
+        console.minLevel = level
+        console.format = "$Dyyyy/MM/dd HH:mm:ss.SSS$d $L: $M -> $N.$F: line $l"
+        console.levelString.verbose = "📢 VERBOSE"
+        console.levelString.debug = "🛠 DEBUG"
+        console.levelString.info = "💡 INFO"
+        console.levelString.warning = "⚠️ WARNING"
+        console.levelString.error = "🚨 ERROR"
+        
+        logger.addDestination(console)
+    }
+}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        setLogger(with: .verbose)
+        
         return true
     }
 

@@ -32,6 +32,8 @@ extension WebViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         
+        logger.verbose(webView.url?.absoluteString ?? "")
+        
         let host = webView.url?.host ?? ""
         setTitle(host)
     }

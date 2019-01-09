@@ -68,6 +68,8 @@ extension WebViewController {
     
     ///웹페이지 이동 요청
     func loadRequest(to urlString: String) {
+        logger.info(urlString)
+        
         guard urlString.hasPrefix("http") else { return }
         guard let url = URL(string: urlString) else { return }
         

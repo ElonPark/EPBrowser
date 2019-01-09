@@ -13,6 +13,9 @@ extension WebViewController: WKUIDelegate {
 
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
 
+        let url = navigationAction.request.url?.absoluteString ?? ""
+        logger.verbose(url)
+        
         if openOtherApp(by: navigationAction.request.url) {
             return nil
         }
