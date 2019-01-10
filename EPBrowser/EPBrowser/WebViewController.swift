@@ -9,11 +9,42 @@
 import UIKit
 import WebKit
 
+
 extension WebViewController {
  
     ///제목 설정
     func setTitle(_ title: String) {
         navigationItem.title = title
+    }
+    
+    ///툴바 보기
+    func showToolBarView() {
+        guard toolbar.isHidden else { return }
+        toolbar.isHidden = false
+        
+        UIView.animate(withDuration: 0.2,
+                       delay: 0.0,
+                       options: .curveEaseIn,
+                       animations: { [unowned self] in
+                        self.toolbarConstraintsHeight.constant = self.toolBarHeight
+                        self.view.layoutIfNeeded()
+        })
+    }
+    
+    ///툴바 숨김
+    func hideToolBarView() {
+        guard !toolbar.isHidden else { return }
+        
+        UIView.animate(withDuration: 0.2,
+                       delay: 0.0,
+                       options: .curveEaseIn,
+                       animations: { [unowned self] in
+                        self.toolbarConstraintsHeight.constant = 0
+                        self.view.layoutIfNeeded()
+                        
+            }, completion: { [unowned self] (_) -> Void in
+                self.toolbar.isHidden = true
+        })
     }
     
     ///웹뷰 사용자 콘텐츠 설정
@@ -56,6 +87,7 @@ extension WebViewController {
                             configuration: webViewConfiguration())
         webView.navigationDelegate = self
         webView.uiDelegate = self
+        webView.scrollView.delegate = self
         webView.allowsBackForwardNavigationGestures = true
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
@@ -161,12 +193,20 @@ class WebViewController: UIViewController {
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var progressBar: UIProgressView!
     
+    @IBOutlet weak var toolbar: UIToolbar!
+    @IBOutlet weak var toolbarConstraintsHeight: NSLayoutConstraint!
     @IBOutlet weak var backButton: UIBarButtonItem!
     @IBOutlet weak var forwardButton: UIBarButtonItem!
     @IBOutlet weak var reloadButton: UIBarButtonItem!
     
     ///웹뷰
     var webView: WKWebView?
+    
+    ///툴바 높이
+    var toolBarHeight: CGFloat = 44
+    
+    ///마지막 웹뷰 스크롤 위치
+    var lastOffsetY: CGFloat = 0
     
     ///새창
     var popupVC: WebViewController?

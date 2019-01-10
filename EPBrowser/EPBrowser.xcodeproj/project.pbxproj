@@ -19,6 +19,7 @@
 		3399D53121E0F1DC00F77AB2 /* WebKitMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3399D53021E0F1DC00F77AB2 /* WebKitMessages.swift */; };
 		3399D53321E0F38C00F77AB2 /* WebKitMessagesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3399D53221E0F38C00F77AB2 /* WebKitMessagesHandler.swift */; };
 		339ACCE921E39FAD0031569A /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339ACCE821E39FAD0031569A /* Config.swift */; };
+		33C0139721E76C360086D871 /* WebViewScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C0139621E76C360086D871 /* WebViewScrollViewDelegate.swift */; };
 		B410B50C67B3291D95B300AF /* Pods_EPBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C4A2D3E83F5205162E60CB1 /* Pods_EPBrowser.framework */; };
 		E5211570755C1FBB6CBCC052 /* Pods_EPBrowserTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5957112A6510382FACF9D9DB /* Pods_EPBrowserTests.framework */; };
 		F0F888F5B1CD0945E28A969F /* Pods_EPBrowserUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8C528475740F5A431124FCF /* Pods_EPBrowserUITests.framework */; };
@@ -61,6 +62,7 @@
 		3399D53021E0F1DC00F77AB2 /* WebKitMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitMessages.swift; sourceTree = "<group>"; };
 		3399D53221E0F38C00F77AB2 /* WebKitMessagesHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitMessagesHandler.swift; sourceTree = "<group>"; };
 		339ACCE821E39FAD0031569A /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		33C0139621E76C360086D871 /* WebViewScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewScrollViewDelegate.swift; sourceTree = "<group>"; };
 		41CA81514B31445D1DB6FE5D /* Pods-EPBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EPBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-EPBrowser/Pods-EPBrowser.release.xcconfig"; sourceTree = "<group>"; };
 		463CF40F4CC8932600FB22CD /* Pods-EPBrowserTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EPBrowserTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EPBrowserTests/Pods-EPBrowserTests.debug.xcconfig"; sourceTree = "<group>"; };
 		49CF5659688BAE49ACBB6064 /* Pods-EPBrowserUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EPBrowserUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-EPBrowserUITests/Pods-EPBrowserUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 			children = (
 				3399D52B21E0EEAB00F77AB2 /* WKNavigationDelegate.swift */,
 				3399D52E21E0EF6C00F77AB2 /* WKUIDelegate.swift */,
+				33C0139621E76C360086D871 /* WebViewScrollViewDelegate.swift */,
 				3399D53021E0F1DC00F77AB2 /* WebKitMessages.swift */,
 				3399D53221E0F38C00F77AB2 /* WebKitMessagesHandler.swift */,
 			);
@@ -414,6 +417,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33C0139721E76C360086D871 /* WebViewScrollViewDelegate.swift in Sources */,
 				3399D52F21E0EF6C00F77AB2 /* WKUIDelegate.swift in Sources */,
 				3399D53121E0F1DC00F77AB2 /* WebKitMessages.swift in Sources */,
 				3399D50021E0E7FA00F77AB2 /* WebViewController.swift in Sources */,
