@@ -32,9 +32,7 @@ extension WebViewController: WKUIDelegate {
     }
     
     func webViewDidClose(_ webView: WKWebView) {
-        if let popup = popupVC {
-            popup.webView?.removeObserver(popup, forKeyPath: progressObserverKey)
-        }
+        popupVC?.progressObserveToken?.invalidate()
         
         navigationController?.popViewController(animated: true)
     }
