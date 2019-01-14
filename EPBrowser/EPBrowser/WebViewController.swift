@@ -140,6 +140,71 @@ extension WebViewController {
         webView?.reload()
     }
     
+    ///자바스크립트 Alert
+    func alertPanel(with message: String, title: String?, completionHandler: @escaping () -> Void) {
+        let alert = UIAlertController(title: title,
+                                      message: message,
+                                      preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "확인",
+                                     style: .default) { _ in
+            completionHandler()
+        }
+        
+        alert.addAction(okAction)
+        
+        present(alert, animated: true)
+    }
+    
+    ///자바스크립트 확인 Alert
+    func alertConfirmPanel(with message: String, title: String?, completionHandler: @escaping (Bool) -> Void) {
+        let alert = UIAlertController(title: title,
+                                      message: message,
+                                      preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "확인",
+                                     style: .default) { _ in
+            completionHandler(true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소",
+                                         style: .cancel) { _ in
+            completionHandler(false)
+        }
+        
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
+    }
+    
+    ///자바스크립트 입력 Alert
+    func alertTextInputPanel(withPrompt prompt: String, defaultText: String?, completionHandler: @escaping (String?) -> Void) {
+        
+        let alert = UIAlertController(title: prompt,
+                                      message: prompt,
+                                      preferredStyle: .alert)
+        
+        alert.addTextField { textField in
+            textField.text = defaultText
+        }
+        
+        let okAction = UIAlertAction(title: "확인",
+                                     style: .default) { _ in
+            completionHandler(alert.textFields?.first?.text)
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소",
+                                         style: .cancel) { _ in
+            completionHandler(nil)
+        }
+        
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
+    }
+    
     /**
      URL scheme이 다른 앱인 경우 해당 URL을 앱 외부로 요청한다.
      
