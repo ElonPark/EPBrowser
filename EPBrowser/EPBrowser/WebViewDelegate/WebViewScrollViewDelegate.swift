@@ -9,7 +9,6 @@
 import UIKit
 
 extension WebViewController: UIScrollViewDelegate {
-    
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         lastOffsetY = scrollView.contentOffset.y
     }

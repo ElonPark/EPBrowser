@@ -10,14 +10,13 @@ import UIKit
 import WebKit
 
 extension WebViewController: WKUIDelegate {
-
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-        
-        let url = navigationAction.request.url?.absoluteString ?? ""
-        logger.verbose(url)
+        defer {
+            let urlString = navigationAction.request.url?.absoluteString ?? ""
+            Log.verbose(urlString)
+        }
         
         guard !openOtherApp(by: navigationAction.request.url) else { return nil }
-        
         guard let popupVC = createPopUpVC(config: configuration) else {
             webView.load(navigationAction.request)
             return nil
@@ -50,24 +49,27 @@ extension WebViewController: WKUIDelegate {
     }
     
     func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
-        
-        alertPanel(with: message,
-                   title: webView.url?.host,
-                   completionHandler: completionHandler)
+        alertPanel(
+            with: message,
+            title: webView.url?.host,
+            completionHandler: completionHandler
+        )
     }
     
     func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
-        
-        alertConfirmPanel(with: message,
-                          title: webView.url?.host,
-                          completionHandler: completionHandler)
+        alertConfirmPanel(
+            with: message,
+            title: webView.url?.host,
+            completionHandler: completionHandler
+        )
     }
     
     func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (String?) -> Void) {
-        
-        alertTextInputPanel(withPrompt: prompt,
-                            defaultText: defaultText,
-                            completionHandler: completionHandler)
+        alertTextInputPanel(
+            withPrompt: prompt,
+            defaultText: defaultText,
+            completionHandler: completionHandler
+        )
     }
     
 }

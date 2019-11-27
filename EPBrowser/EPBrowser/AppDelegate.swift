@@ -7,25 +7,9 @@
 //
 
 import UIKit
-import SwiftyBeaver
+import EPLogger
 
-let logger = SwiftyBeaver.self
-
-extension AppDelegate {
-    
-    func setLogger(with level: SwiftyBeaver.Level) {
-        let console = ConsoleDestination()
-        console.minLevel = level
-        console.format = "$Dyyyy/MM/dd HH:mm:ss.SSS$d $L: $M -> $N.$F: line $l"
-        console.levelString.verbose = "📢 VERBOSE"
-        console.levelString.debug = "🛠 DEBUG"
-        console.levelString.info = "💡 INFO"
-        console.levelString.warning = "⚠️ WARNING"
-        console.levelString.error = "🚨 ERROR"
-        
-        logger.addDestination(console)
-    }
-}
+public typealias Log = EPLogger.Log
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -34,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        setLogger(with: .verbose)
+        Log.congfig(level: .verbose, formatType: .medium)
         
         return true
     }

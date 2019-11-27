@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -21,6 +21,8 @@
 		339ACCE921E39FAD0031569A /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339ACCE821E39FAD0031569A /* Config.swift */; };
 		33C0139721E76C360086D871 /* WebViewScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C0139621E76C360086D871 /* WebViewScrollViewDelegate.swift */; };
 		B410B50C67B3291D95B300AF /* Pods_EPBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C4A2D3E83F5205162E60CB1 /* Pods_EPBrowser.framework */; };
+		DB703F31238E90B40064D276 /* UIStoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB703F30238E90B40064D276 /* UIStoryboardExtension.swift */; };
+		DB703F33238E93C80064D276 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB703F32238E93C80064D276 /* UIViewExtensions.swift */; };
 		E5211570755C1FBB6CBCC052 /* Pods_EPBrowserTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5957112A6510382FACF9D9DB /* Pods_EPBrowserTests.framework */; };
 		F0F888F5B1CD0945E28A969F /* Pods_EPBrowserUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8C528475740F5A431124FCF /* Pods_EPBrowserUITests.framework */; };
 /* End PBXBuildFile section */
@@ -71,6 +73,8 @@
 		7C4A2D3E83F5205162E60CB1 /* Pods_EPBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EPBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF176D1AA6180EA74F03037E /* Pods-EPBrowserTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EPBrowserTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-EPBrowserTests/Pods-EPBrowserTests.release.xcconfig"; sourceTree = "<group>"; };
 		D8C528475740F5A431124FCF /* Pods_EPBrowserUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EPBrowserUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB703F30238E90B40064D276 /* UIStoryboardExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStoryboardExtension.swift; sourceTree = "<group>"; };
+		DB703F32238E93C80064D276 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +140,7 @@
 		3399D4FC21E0E7FA00F77AB2 /* EPBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				DB703F2F238E8FBA0064D276 /* Extensions */,
 				3399D52D21E0EEF200F77AB2 /* WebViewDelegate */,
 				3399D4FF21E0E7FA00F77AB2 /* WebViewController.swift */,
 				3399D4FD21E0E7FA00F77AB2 /* AppDelegate.swift */,
@@ -172,8 +177,8 @@
 				3399D52B21E0EEAB00F77AB2 /* WKNavigationDelegate.swift */,
 				3399D52E21E0EF6C00F77AB2 /* WKUIDelegate.swift */,
 				33C0139621E76C360086D871 /* WebViewScrollViewDelegate.swift */,
-				3399D53021E0F1DC00F77AB2 /* WebKitMessages.swift */,
 				3399D53221E0F38C00F77AB2 /* WebKitMessagesHandler.swift */,
+				3399D53021E0F1DC00F77AB2 /* WebKitMessages.swift */,
 			);
 			path = WebViewDelegate;
 			sourceTree = "<group>";
@@ -189,6 +194,15 @@
 				49CF5659688BAE49ACBB6064 /* Pods-EPBrowserUITests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		DB703F2F238E8FBA0064D276 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				DB703F30238E90B40064D276 /* UIStoryboardExtension.swift */,
+				DB703F32238E93C80064D276 /* UIViewExtensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,6 +277,7 @@
 				TargetAttributes = {
 					3399D4F921E0E7FA00F77AB2 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1120;
 					};
 					3399D50D21E0E7FD00F77AB2 = {
 						CreatedOnToolsVersion = 10.1;
@@ -372,20 +387,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-EPBrowser/Pods-EPBrowser-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-EPBrowser/Pods-EPBrowser-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-EPBrowser/Pods-EPBrowser-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EPBrowser/Pods-EPBrowser-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EPBrowser/Pods-EPBrowser-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A4EB8B0AE0714147AAA57C12 /* [CP] Check Pods Manifest.lock */ = {
@@ -421,7 +431,9 @@
 				3399D52F21E0EF6C00F77AB2 /* WKUIDelegate.swift in Sources */,
 				3399D53121E0F1DC00F77AB2 /* WebKitMessages.swift in Sources */,
 				3399D50021E0E7FA00F77AB2 /* WebViewController.swift in Sources */,
+				DB703F31238E90B40064D276 /* UIStoryboardExtension.swift in Sources */,
 				339ACCE921E39FAD0031569A /* Config.swift in Sources */,
+				DB703F33238E93C80064D276 /* UIViewExtensions.swift in Sources */,
 				3399D52C21E0EEAB00F77AB2 /* WKNavigationDelegate.swift in Sources */,
 				3399D53321E0F38C00F77AB2 /* WebKitMessagesHandler.swift in Sources */,
 				3399D4FE21E0E7FA00F77AB2 /* AppDelegate.swift in Sources */,
@@ -608,9 +620,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = park.elon.EPBowser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -628,9 +641,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = park.elon.EPBowser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

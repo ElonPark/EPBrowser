@@ -1,0 +1,3 @@
+${PODS_ROOT}/Target Support Files/Pods-EPBrowser/Pods-EPBrowser-frameworks.sh
+${BUILT_PRODUCTS_DIR}/EPLogger/EPLogger.framework
+${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework
