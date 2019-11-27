@@ -263,6 +263,7 @@
 				TargetAttributes = {
 					3399D4F921E0E7FA00F77AB2 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1120;
 					};
 					3399D50D21E0E7FD00F77AB2 = {
 						CreatedOnToolsVersion = 10.1;
@@ -610,7 +611,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = park.elon.EPBowser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -630,7 +631,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = park.elon.EPBowser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
