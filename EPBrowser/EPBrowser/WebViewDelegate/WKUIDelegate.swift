@@ -12,29 +12,25 @@ import WebKit
 extension WebViewController: WKUIDelegate {
 
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-
+        
         let url = navigationAction.request.url?.absoluteString ?? ""
         logger.verbose(url)
         
-        if openOtherApp(by: navigationAction.request.url) {
+        guard !openOtherApp(by: navigationAction.request.url) else { return nil }
+        
+        guard let popupVC = createPopUpVC(config: configuration) else {
+            webView.load(navigationAction.request)
             return nil
         }
-       
-        if let popupVC = createPopUpVC(config: configuration) {
-            self.popupVC = popupVC
-            navigationController?.pushViewController(popupVC, animated: true)
-            
-        } else {
-            webView.load(navigationAction.request)
-        }
         
-        return popupVC?.webView
+        self.popupVC = popupVC
+        navigationController?.pushViewController(popupVC, animated: true)
+        
+        return popupVC.webView
     }
     
     func webViewDidClose(_ webView: WKWebView) {
-        if let popup = popupVC {
-            popup.webView?.removeObserver(popup, forKeyPath: progressObserverKey)
-        }
+        popupVC?.progressObserveToken?.invalidate()
         
         navigationController?.popViewController(animated: true)
     }
@@ -53,16 +49,25 @@ extension WebViewController: WKUIDelegate {
         return nil
     }
     
-    func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
-        
-    }
-    
     func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
         
+        alertPanel(with: message,
+                   title: webView.url?.host,
+                   completionHandler: completionHandler)
+    }
+    
+    func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
+        
+        alertConfirmPanel(with: message,
+                          title: webView.url?.host,
+                          completionHandler: completionHandler)
     }
     
     func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (String?) -> Void) {
         
+        alertTextInputPanel(withPrompt: prompt,
+                            defaultText: defaultText,
+                            completionHandler: completionHandler)
     }
     
 }

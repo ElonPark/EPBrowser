@@ -78,6 +78,25 @@ extension WebViewController {
         return configuration
     }
     
+    ///프로그레스 업데이트
+    func updateProgress(to progressBar: UIProgressView, by value: Double) {
+        let progress = Float(value)
+        progressBar.isHidden = progress == 1
+        
+        guard progressBar.progress < progress else { return }
+        progressBar.setProgress(progress, animated: true)
+    }
+    
+    ///웹뷰 프로그레스 옵저버
+    func setProgressObserver() {
+        progressObserveToken = webView?.observe(\.estimatedProgress, options: .new) { [weak self] (_, estimatedProgress) in
+            guard let newValue = estimatedProgress.newValue else { return }
+            guard let progressBar = self?.progressBar else { return }
+            
+            self?.updateProgress(to: progressBar, by: newValue)
+        }
+    }
+    
     ///웹뷰 초기화
     func initWebView() -> WKWebView {
         guard self.webView == nil else { return self.webView! }
@@ -90,10 +109,6 @@ extension WebViewController {
         webView.scrollView.delegate = self
         webView.allowsBackForwardNavigationGestures = true
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
-        ///프로그레스 옵버저
-        webView.addObserver(self, forKeyPath: progressObserverKey,
-                            options: .new, context: nil)
         
         return webView
     }
@@ -123,6 +138,71 @@ extension WebViewController {
     ///새로고침
     func reload() {
         webView?.reload()
+    }
+    
+    ///자바스크립트 Alert
+    func alertPanel(with message: String, title: String?, completionHandler: @escaping () -> Void) {
+        let alert = UIAlertController(title: title,
+                                      message: message,
+                                      preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "확인",
+                                     style: .default) { _ in
+            completionHandler()
+        }
+        
+        alert.addAction(okAction)
+        
+        present(alert, animated: true)
+    }
+    
+    ///자바스크립트 확인 Alert
+    func alertConfirmPanel(with message: String, title: String?, completionHandler: @escaping (Bool) -> Void) {
+        let alert = UIAlertController(title: title,
+                                      message: message,
+                                      preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "확인",
+                                     style: .default) { _ in
+            completionHandler(true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소",
+                                         style: .cancel) { _ in
+            completionHandler(false)
+        }
+        
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
+    }
+    
+    ///자바스크립트 입력 Alert
+    func alertTextInputPanel(withPrompt prompt: String, defaultText: String?, completionHandler: @escaping (String?) -> Void) {
+        
+        let alert = UIAlertController(title: prompt,
+                                      message: prompt,
+                                      preferredStyle: .alert)
+        
+        alert.addTextField { textField in
+            textField.text = defaultText
+        }
+        
+        let okAction = UIAlertAction(title: "확인",
+                                     style: .default) { _ in
+            completionHandler(alert.textFields?.first?.text)
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소",
+                                         style: .cancel) { _ in
+            completionHandler(nil)
+        }
+        
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
     }
     
     /**
@@ -175,15 +255,13 @@ extension WebViewController {
         popupVC.webView = WKWebView(frame: CGRect.zero, configuration: config)
         popupVC.webView?.navigationDelegate = popupVC
         popupVC.webView?.uiDelegate = popupVC
+        popupVC.webView?.scrollView.delegate = popupVC
     
         popupVC.webView?.allowsBackForwardNavigationGestures = true
         popupVC.webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
-        popupVC.webView?.addObserver(popupVC, forKeyPath: progressObserverKey,
-                            options: .new, context: nil)
-     
         popupVC.navigationItem.leftBarButtonItem = navigationBackButton()
-        
+
         return popupVC
     }
 }
@@ -202,6 +280,9 @@ class WebViewController: UIViewController {
     ///웹뷰
     var webView: WKWebView?
     
+    ///프로그레스 옵저버 토큰
+    var progressObserveToken: NSKeyValueObservation? = nil
+    
     ///툴바 높이
     var toolBarHeight: CGFloat = 44
     
@@ -211,8 +292,6 @@ class WebViewController: UIViewController {
     ///새창
     var popupVC: WebViewController?
     
-    ///웹뷰 프로그레스 옵저버 키
-    let progressObserverKey = "estimatedProgress"
     
     @IBAction func goBack(_ sender: UIBarButtonItem) {
         goBack()
@@ -238,6 +317,8 @@ class WebViewController: UIViewController {
         }
         
         if let webView = self.webView {
+            ///프로그레스 옵버저
+            setProgressObserver()
             mainView.insertSubview(webView, belowSubview: progressBar)
         }
     }
@@ -254,18 +335,5 @@ class WebViewController: UIViewController {
         super.viewDidLayoutSubviews()
         
         webView?.frame = mainView.bounds
-    }
-    
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        
-        //프로그레스 로딩 애니메이션
-        guard let key = keyPath, key == progressObserverKey else { return }
-        guard let webView = self.webView else { return }
-        progressBar.isHidden = webView.estimatedProgress == 1
-        
-        let progress = Float(webView.estimatedProgress)
-        if progressBar.progress < progress {
-            progressBar.setProgress(progress, animated: true)
-        }
     }
 }
