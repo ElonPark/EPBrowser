@@ -18,7 +18,6 @@ extension WebViewController: WKScriptMessageHandler {
         switch webKitMessage {
         case .documentReady:
             progressBar.isHidden = true
-
         }
     }
 }

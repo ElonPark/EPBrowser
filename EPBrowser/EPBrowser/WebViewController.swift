@@ -8,7 +8,84 @@
 
 import UIKit
 import WebKit
+import SnapKit
 
+final class WebViewController: UIViewController {
+
+    @IBOutlet private weak var mainView: UIView!
+    @IBOutlet weak var progressBar: UIProgressView!
+    
+    @IBOutlet private weak var toolbar: UIToolbar!
+    @IBOutlet private weak var toolbarConstraintsHeight: NSLayoutConstraint!
+    @IBOutlet private weak var backButton: UIBarButtonItem!
+    @IBOutlet private weak var forwardButton: UIBarButtonItem!
+    @IBOutlet private weak var reloadButton: UIBarButtonItem!
+    
+    /// 웹뷰
+    var webView: WKWebView?
+    
+    /// 프로그레스 옵저버 토큰
+    var progressObserveToken: NSKeyValueObservation? = nil
+    
+    /// 툴바 높이
+    private var toolBarHeight: CGFloat = 44
+    
+    /// 마지막 웹뷰 스크롤 위치
+    var lastOffsetY: CGFloat = 0
+    
+    /// 새창
+    weak var popupVC: WebViewController?
+    
+    @IBAction private func goBack(_ sender: UIBarButtonItem) {
+        goBack()
+    }
+    
+    @IBAction private func goForward(_ sender: UIBarButtonItem) {
+        goForward()
+    }
+    
+    @IBAction private func reload(_ sender: UIBarButtonItem) {
+        reload()
+    }
+    
+    
+    // - MARK: View lifeCycle
+    
+    deinit {
+        Log.verbose(type(of: self))
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if webView == nil {
+            webView = initWebView()
+            loadRequest(to: "http://www.naver.com")
+        }
+        
+        if let webView = self.webView {
+            ///프로그레스 옵버저
+            setProgressObserver()
+            mainView.insertSubview(webView, belowSubview: progressBar)
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        webView?.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+}
 
 extension WebViewController {
  
@@ -20,35 +97,32 @@ extension WebViewController {
     ///툴바 보기
     func showToolBarView() {
         guard toolbar.isHidden else { return }
-        toolbar.isHidden = false
         
-        UIView.animate(withDuration: 0.2,
-                       delay: 0.0,
-                       options: .curveEaseIn,
-                       animations: { [unowned self] in
-                        self.toolbarConstraintsHeight.constant = self.toolBarHeight
-                        self.view.layoutIfNeeded()
-        })
+        toolbar.isHidden = false
+        UIView.Animator(duration: 0.2, options: .curveEaseIn)
+            .animations { [unowned self] in
+                self.toolbarConstraintsHeight.constant = self.toolBarHeight
+                self.view.layoutIfNeeded()
+        }
+        .animate()
     }
     
     ///툴바 숨김
     func hideToolBarView() {
         guard !toolbar.isHidden else { return }
-        
-        UIView.animate(withDuration: 0.2,
-                       delay: 0.0,
-                       options: .curveEaseIn,
-                       animations: { [unowned self] in
-                        self.toolbarConstraintsHeight.constant = 0
-                        self.view.layoutIfNeeded()
-                        
-            }, completion: { [unowned self] (_) -> Void in
-                self.toolbar.isHidden = true
-        })
+        UIView.Animator(duration: 0.2, options: .curveEaseIn)
+            .animations { [unowned self] in
+                self.toolbarConstraintsHeight.constant = 0
+                self.view.layoutIfNeeded()
+        }
+        .completion { [unowned self] _ in
+            self.toolbar.isHidden = true
+        }
+        .animate()
     }
     
     ///웹뷰 사용자 콘텐츠 설정
-    func webViewUserContent() -> WKUserContentController {
+    private func webViewUserContent() -> WKUserContentController {
         let contentController = WKUserContentController()
         
         ///웹에서 받을 메시지 설정
@@ -65,7 +139,7 @@ extension WebViewController {
     }
     
     ///웹뷰 설정
-    func webViewConfiguration() -> WKWebViewConfiguration {
+    private func webViewConfiguration() -> WKWebViewConfiguration {
         let configuration = WKWebViewConfiguration()
         configuration.dataDetectorTypes = .all
         configuration.userContentController = webViewUserContent()
@@ -79,7 +153,7 @@ extension WebViewController {
     }
     
     ///프로그레스 업데이트
-    func updateProgress(to progressBar: UIProgressView, by value: Double) {
+    private func updateProgress(to progressBar: UIProgressView, by value: Double) {
         let progress = Float(value)
         progressBar.isHidden = progress == 1
         
@@ -88,7 +162,7 @@ extension WebViewController {
     }
     
     ///웹뷰 프로그레스 옵저버
-    func setProgressObserver() {
+    private func setProgressObserver() {
         progressObserveToken = webView?.observe(\.estimatedProgress, options: .new) { [weak self] (_, estimatedProgress) in
             guard let newValue = estimatedProgress.newValue else { return }
             guard let progressBar = self?.progressBar else { return }
@@ -98,25 +172,23 @@ extension WebViewController {
     }
     
     ///웹뷰 초기화
-    func initWebView() -> WKWebView {
+    private func initWebView() -> WKWebView {
         guard self.webView == nil else { return self.webView! }
-   
         ///웹뷰 설정
         let webView = WKWebView(frame: CGRect.zero,
                             configuration: webViewConfiguration())
+        webView.translatesAutoresizingMaskIntoConstraints = false
         webView.navigationDelegate = self
         webView.uiDelegate = self
         webView.scrollView.delegate = self
         webView.allowsBackForwardNavigationGestures = true
-        webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
         return webView
     }
     
     ///웹페이지 이동 요청
-    func loadRequest(to urlString: String) {
-        logger.info(urlString)
-        
+    private func loadRequest(to urlString: String) {
+        Log.info(urlString)
         guard urlString.hasPrefix("http") else { return }
         guard let url = URL(string: urlString) else { return }
         
@@ -124,19 +196,19 @@ extension WebViewController {
     }
     
     ///뒤로가기
-    func goBack() {
+    private func goBack() {
         guard let webView = self.webView, webView.canGoBack else { return }
         webView.goBack()
     }
     
     ///앞으로가기
-    func goForward() {
+    private func goForward() {
         guard let webView = self.webView, webView.canGoForward else { return }
         webView.goForward()
     }
     
     ///새로고침
-    func reload() {
+    private func reload() {
         webView?.reload()
     }
     
@@ -180,7 +252,6 @@ extension WebViewController {
     
     ///자바스크립트 입력 Alert
     func alertTextInputPanel(withPrompt prompt: String, defaultText: String?, completionHandler: @escaping (String?) -> Void) {
-        
         let alert = UIAlertController(title: prompt,
                                       message: prompt,
                                       preferredStyle: .alert)
@@ -217,7 +288,7 @@ extension WebViewController {
         guard let scheme = url.scheme else { return false }
         guard url.scheme != Config.schmes else { return false }
         
-        if host.contains("itunse.apple.com") {
+        if host.contains("itunse.apple.com") || host.contains("apps.apple.com") {
             UIApplication.shared.open(url)
             return true
             
@@ -236,7 +307,7 @@ extension WebViewController {
     }
     
     ///새창 닫기 버튼
-    func navigationBackButton() -> UIBarButtonItem {
+    private func navigationBackButton() -> UIBarButtonItem {
         let closeButton = UIBarButtonItem(title: "닫기", style: .plain, target: self, action: #selector(closePopup))
         
         return closeButton
@@ -250,90 +321,16 @@ extension WebViewController {
      - Returns: 새롭게 생성 된 웹뷰
      */
     func createPopUpVC(config: WKWebViewConfiguration) -> WebViewController? {
-        guard let popupVC = storyboard?.instantiateViewController(withIdentifier: "WebViewController") as? WebViewController else { return nil }
+        guard let popupVC = UIStoryboard.webViewVC() else { return nil }
+        popupVC.navigationItem.leftBarButtonItem = navigationBackButton()
         
         popupVC.webView = WKWebView(frame: CGRect.zero, configuration: config)
+        popupVC.webView?.translatesAutoresizingMaskIntoConstraints = false
         popupVC.webView?.navigationDelegate = popupVC
         popupVC.webView?.uiDelegate = popupVC
         popupVC.webView?.scrollView.delegate = popupVC
-    
         popupVC.webView?.allowsBackForwardNavigationGestures = true
-        popupVC.webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
-        popupVC.navigationItem.leftBarButtonItem = navigationBackButton()
-
         return popupVC
-    }
-}
-
-class WebViewController: UIViewController {
-
-    @IBOutlet weak var mainView: UIView!
-    @IBOutlet weak var progressBar: UIProgressView!
-    
-    @IBOutlet weak var toolbar: UIToolbar!
-    @IBOutlet weak var toolbarConstraintsHeight: NSLayoutConstraint!
-    @IBOutlet weak var backButton: UIBarButtonItem!
-    @IBOutlet weak var forwardButton: UIBarButtonItem!
-    @IBOutlet weak var reloadButton: UIBarButtonItem!
-    
-    ///웹뷰
-    var webView: WKWebView?
-    
-    ///프로그레스 옵저버 토큰
-    var progressObserveToken: NSKeyValueObservation? = nil
-    
-    ///툴바 높이
-    var toolBarHeight: CGFloat = 44
-    
-    ///마지막 웹뷰 스크롤 위치
-    var lastOffsetY: CGFloat = 0
-    
-    ///새창
-    var popupVC: WebViewController?
-    
-    
-    @IBAction func goBack(_ sender: UIBarButtonItem) {
-        goBack()
-    }
-    
-    @IBAction func goForward(_ sender: UIBarButtonItem) {
-        goForward()
-    }
-    
-    @IBAction func reload(_ sender: UIBarButtonItem) {
-        reload()
-    }
-    
-    
-    // - MARK: View lifeCycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        if webView == nil {
-            webView = initWebView()
-            loadRequest(to: "http://www.naver.com")
-        }
-        
-        if let webView = self.webView {
-            ///프로그레스 옵버저
-            setProgressObserver()
-            mainView.insertSubview(webView, belowSubview: progressBar)
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        webView?.frame = mainView.bounds
     }
 }

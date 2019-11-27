@@ -10,7 +10,6 @@ import UIKit
 import WebKit
 
 extension WebViewController: WKNavigationDelegate {
-
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         
         var policy: WKNavigationActionPolicy = .allow
@@ -31,8 +30,7 @@ extension WebViewController: WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        
-        logger.verbose(webView.url?.absoluteString ?? "")
+        Log.verbose(webView.url?.absoluteString ?? "")
         
         let host = webView.url?.host ?? ""
         setTitle(host)
@@ -51,11 +49,11 @@ extension WebViewController: WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        
+        Log.error(error.localizedDescription)
     }
     
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        
+        Log.error(error.localizedDescription)
     }
     
     func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
@@ -65,7 +63,6 @@ extension WebViewController: WKNavigationDelegate {
     
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
         guard !webView.isLoading else { return }
-     
         webView.reloadFromOrigin()
     }
 }
